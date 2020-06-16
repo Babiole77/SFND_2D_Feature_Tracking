@@ -41,11 +41,7 @@ void matchDescriptors(std::vector<cv::KeyPoint> &kPtsSource, std::vector<cv::Key
     { // k nearest neighbors (k=2)
         std::vector<std::vector<cv::DMatch>> knn_matches;
         matcher->knnMatch(descSource, descRef, knn_matches, 2);
-<<<<<<< Updated upstream
-        double minDescDistRatio = 8;
-=======
         double minDescDistRatio = 0.8;
->>>>>>> Stashed changes
         for(auto itr=knn_matches.begin(); itr!=knn_matches.end(); ++itr)
         {
             if((*itr)[0].distance < minDescDistRatio*(*itr)[1].distance)
@@ -90,11 +86,7 @@ void descKeypoints(vector<cv::KeyPoint> &keypoints, cv::Mat &img, cv::Mat &descr
     }
     else
     {
-<<<<<<< Updated upstream
-        std::cout << "Enter a proper descriptor type";
-=======
         out_data << "Enter a proper descriptor type";
->>>>>>> Stashed changes
     }
     
 
@@ -103,11 +95,7 @@ void descKeypoints(vector<cv::KeyPoint> &keypoints, cv::Mat &img, cv::Mat &descr
 
     extractor->compute(img, keypoints, descriptors);
     t = ((double)cv::getTickCount() - t) / cv::getTickFrequency();
-<<<<<<< Updated upstream
-    cout << "\033[1;31m" << descriptorType << " descriptor extraction in " << 1000 * t / 1.0 << " ms\033[m" << endl;
-=======
     out_data << descriptorType << " descriptor extraction in " << 1000 * t / 1.0 << " ms" << endl;
->>>>>>> Stashed changes
 }
 
 // Detect keypoints in image using the traditional Shi-Thomasi detector
@@ -199,11 +187,7 @@ for(size_t j=0; j < dst_norm.rows; ++j)
     } // eof loop over cols
 }     // eof loop over rows
 t = ((double)cv::getTickCount() - t) / cv::getTickFrequency();
-<<<<<<< Updated upstream
-cout << "Harris detection with n=" << keypoints.size() << " keypoints in " << 1000 * t / 1.0 << " ms" << endl;
-=======
 out_data << "Harris detection with n=" << keypoints.size() << " keypoints in " << 1000 * t / 1.0 << " ms" << endl;
->>>>>>> Stashed changes
 
 // visualize results
 if (bVis)
@@ -240,10 +224,6 @@ void detKeypointsModern(std::vector<cv::KeyPoint> &keypoints, cv::Mat &img, std:
         detector->detect(img, keypoints);
     }
     t = ((double)cv::getTickCount() - t) / cv::getTickFrequency();
-<<<<<<< Updated upstream
-    cout << detectorType << " detector has found " << keypoints.size() << " keypoints in " << 1000 * t / 1.0 << " ms" << endl;
-=======
     out_data << detectorType << " detector has found " << keypoints.size() << " keypoints in " << 1000 * t / 1.0 << " ms" << endl;
->>>>>>> Stashed changes
 }
   
