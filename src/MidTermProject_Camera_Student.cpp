@@ -25,6 +25,7 @@ int main(int argc, const char *argv[])
     /* INIT VARIABLES AND DATA STRUCTURES */
 
     // data location
+    std::ofstream out_data("output.txt", std::ios_base::app);
     string dataPath = "../";
 
     // camera
@@ -71,8 +72,13 @@ int main(int argc, const char *argv[])
 
         // extract 2D keypoints from current image
         vector<cv::KeyPoint> keypoints; // create empty feature list for current image
+<<<<<<< Updated upstream
         string detectorType = "SHITOMASI";
         string descriptorType = "BRISK"; // BRIEF, ORB, FREAK, AKAZE, SIFT
+=======
+        string detectorType = "HARRIS";
+        string descriptorType = "BRISK"; // BRISK, BRIEF, ORB, FREAK, AKAZE, SIFT
+>>>>>>> Stashed changes
 
         //// TASK MP.2 -> add the following keypoint detectors in file matching2D.cpp and enable string-based selection based on detectorType
         //// -> HARRIS, FAST, BRISK, ORB, AKAZE, SIFT
@@ -94,7 +100,11 @@ int main(int argc, const char *argv[])
         //// TASK MP.3 -> only keep keypoints on the preceding vehicle
 
         // only keep keypoints on the preceding vehicle
+<<<<<<< Updated upstream
         bool bFocusOnVehicle = false;
+=======
+        bool bFocusOnVehicle = true;
+>>>>>>> Stashed changes
         double cx = 535, cy = 180, width = 150, height = 180;
         int numKeypointsOnVehicle = 0;
         if (bFocusOnVehicle)
@@ -108,7 +118,11 @@ int main(int argc, const char *argv[])
                     ++itr;
                     ++numKeypointsOnVehicle;
                 } 
+<<<<<<< Updated upstream
         std::cout << numKeypointsOnVehicle << " keypoints have been found on the  preceding vehicle" << endl;
+=======
+        out_data << numKeypointsOnVehicle << " keypoints have been found on the  preceding vehicle" << endl;
+>>>>>>> Stashed changes
         }
         //// EOF STUDENT ASSIGNMENT
 
@@ -152,7 +166,11 @@ int main(int argc, const char *argv[])
 
             vector<cv::DMatch> matches;
             string matcherType = "MAT_BF";        // MAT_BF, MAT_FLANN
+<<<<<<< Updated upstream
             string descriptorType = "DES_BINARY"; // DES_BINARY, DES_HOG
+=======
+            string descriptorNormType = "DES_BINARY"; // DES_BINARY, DES_HOG
+>>>>>>> Stashed changes
             string selectorType = "SEL_KNN";       // SEL_NN, SEL_KNN
 
             //// STUDENT ASSIGNMENT
@@ -161,7 +179,7 @@ int main(int argc, const char *argv[])
 
             matchDescriptors((dataBuffer.end() - 2)->keypoints, (dataBuffer.end() - 1)->keypoints,
                              (dataBuffer.end() - 2)->descriptors, (dataBuffer.end() - 1)->descriptors,
-                             matches, descriptorType, matcherType, selectorType);
+                             matches, descriptorNormType, matcherType, selectorType, descriptorType);
 
             //// EOF STUDENT ASSIGNMENT
 
@@ -169,7 +187,11 @@ int main(int argc, const char *argv[])
             (dataBuffer.end() - 1)->kptMatches = matches;
 
             cout << "#4 : MATCH KEYPOINT DESCRIPTORS done" << endl;
+<<<<<<< Updated upstream
             cout << "\033[1;31m" << matches.size() << " matches have been found\033[m" << endl;
+=======
+            out_data << matches.size() << " matches have been found" << endl;
+>>>>>>> Stashed changes
             // visualize matches between current and previous image
             if (bVis)
             {

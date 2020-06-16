@@ -1,11 +1,15 @@
 #include <numeric>
+#include <iostream>
+#include <fstream>
+#include <sstream>
 #include "matching2D.hpp"
 
 using namespace std;
+std::ofstream out_data("output.txt", std::ios_base::app);
 
 // Find best matches for keypoints in two camera images based on several matching methods
 void matchDescriptors(std::vector<cv::KeyPoint> &kPtsSource, std::vector<cv::KeyPoint> &kPtsRef, cv::Mat &descSource, cv::Mat &descRef,
-                      std::vector<cv::DMatch> &matches, std::string descriptorType, std::string matcherType, std::string selectorType)
+                      std::vector<cv::DMatch> &matches, std::string descriptorNormType, std::string matcherType, std::string selectorType, std::string descriptorType)
 {
     // configure matcher
     bool crossCheck = false;
@@ -13,6 +17,12 @@ void matchDescriptors(std::vector<cv::KeyPoint> &kPtsSource, std::vector<cv::Key
 
     if (matcherType.compare("MAT_BF") == 0)
     {
+        // Since SIFT return CV_32F we cannot use Hamming distance
+        if (descriptorType.compare("SIFT") == 0) 
+        {
+            descSource.convertTo(descSource, CV_8U);
+            descRef.convertTo(descRef, CV_8U);
+        }
         int normType = cv::NORM_HAMMING;
         matcher = cv::BFMatcher::create(normType, crossCheck);
     }
@@ -31,7 +41,11 @@ void matchDescriptors(std::vector<cv::KeyPoint> &kPtsSource, std::vector<cv::Key
     { // k nearest neighbors (k=2)
         std::vector<std::vector<cv::DMatch>> knn_matches;
         matcher->knnMatch(descSource, descRef, knn_matches, 2);
+<<<<<<< Updated upstream
         double minDescDistRatio = 8;
+=======
+        double minDescDistRatio = 0.8;
+>>>>>>> Stashed changes
         for(auto itr=knn_matches.begin(); itr!=knn_matches.end(); ++itr)
         {
             if((*itr)[0].distance < minDescDistRatio*(*itr)[1].distance)
@@ -76,15 +90,24 @@ void descKeypoints(vector<cv::KeyPoint> &keypoints, cv::Mat &img, cv::Mat &descr
     }
     else
     {
+<<<<<<< Updated upstream
         std::cout << "Enter a proper descriptor type";
+=======
+        out_data << "Enter a proper descriptor type";
+>>>>>>> Stashed changes
     }
     
 
     // perform feature description
     double t = (double)cv::getTickCount();
+
     extractor->compute(img, keypoints, descriptors);
     t = ((double)cv::getTickCount() - t) / cv::getTickFrequency();
+<<<<<<< Updated upstream
     cout << "\033[1;31m" << descriptorType << " descriptor extraction in " << 1000 * t / 1.0 << " ms\033[m" << endl;
+=======
+    out_data << descriptorType << " descriptor extraction in " << 1000 * t / 1.0 << " ms" << endl;
+>>>>>>> Stashed changes
 }
 
 // Detect keypoints in image using the traditional Shi-Thomasi detector
@@ -114,7 +137,7 @@ void detKeypointsShiTomasi(vector<cv::KeyPoint> &keypoints, cv::Mat &img, bool b
         keypoints.push_back(newKeyPoint);
     }
     t = ((double)cv::getTickCount() - t) / cv::getTickFrequency();
-    cout << "Shi-Tomasi detection with n=" << keypoints.size() << " keypoints in " << 1000 * t / 1.0 << " ms" << endl;
+    out_data << "Shi-Tomasi detection with n=" << keypoints.size() << " keypoints in " << 1000 * t / 1.0 << " ms" << endl;
 
     // visualize results
     if (bVis)
@@ -176,7 +199,11 @@ for(size_t j=0; j < dst_norm.rows; ++j)
     } // eof loop over cols
 }     // eof loop over rows
 t = ((double)cv::getTickCount() - t) / cv::getTickFrequency();
+<<<<<<< Updated upstream
 cout << "Harris detection with n=" << keypoints.size() << " keypoints in " << 1000 * t / 1.0 << " ms" << endl;
+=======
+out_data << "Harris detection with n=" << keypoints.size() << " keypoints in " << 1000 * t / 1.0 << " ms" << endl;
+>>>>>>> Stashed changes
 
 // visualize results
 if (bVis)
@@ -213,6 +240,10 @@ void detKeypointsModern(std::vector<cv::KeyPoint> &keypoints, cv::Mat &img, std:
         detector->detect(img, keypoints);
     }
     t = ((double)cv::getTickCount() - t) / cv::getTickFrequency();
+<<<<<<< Updated upstream
     cout << detectorType << " detector has found " << keypoints.size() << " keypoints in " << 1000 * t / 1.0 << " ms" << endl;
+=======
+    out_data << detectorType << " detector has found " << keypoints.size() << " keypoints in " << 1000 * t / 1.0 << " ms" << endl;
+>>>>>>> Stashed changes
 }
   
